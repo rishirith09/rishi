@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="eventApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Event Calendar</title>
+    <style>
+        /* Basic CSS for calendar responsiveness */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            border: 1px solid #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .calendar .day {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .event {
+            background-color: lightblue;
+            color: #333;
+            padding: 2px;
+            border-radius: 3px;
+            margin-bottom: 2px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .calendar {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div ng-controller="EventController">
+        <h1>Event Calendar</h1>
+        <div class="calendar">
+            <div class="day" ng-repeat="day in days">
+                <h2>{{ day.date }}</h2>
+                <div class="event" ng-repeat="event in day.events">{{ event }}</div>
+                <button ng-click="addEvent(day)">Add Event</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        angular.module('eventApp', [])
+        .controller('EventController', function($scope) {
+            $scope.days = [];
+
+            // Generate sample data for demonstration
+            for (let i = 1; i <= 31; i++) {
+                $scope.days.push({
+                    date: 'March ' + i,
+                    events: []
+                });
+            }
+
+            // Function to add event to a day
+            $scope.addEvent = function(day) {
+                let eventName = prompt('Enter event name:');
+                if (eventName) {
+                    day.events.push(eventName);
+                }
+            };
+        });
+    </script>
+</body>
+</html>
