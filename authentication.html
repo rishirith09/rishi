@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="authApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Authentication System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body ng-controller="AuthController as authCtrl">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>User Authentication System</h1>
+        </div>
+        <div ng-show="!authCtrl.isAuthenticated()">
+            <form class="form-signin" ng-submit="authCtrl.login()">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus ng-model="authCtrl.user.email">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required ng-model="authCtrl.user.password">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+            <p class="text-center">Not registered yet? <a href="#" ng-click="authCtrl.showSignup()">Sign up here</a></p>
+        </div>
+        <div ng-show="authCtrl.isAuthenticated()">
+            <h2>Welcome, {{authCtrl.user.email}}!</h2>
+            <p>You are now logged in.</p>
+            <button class="btn btn-lg btn-primary btn-block" ng-click="authCtrl.logout()">Log out</button>
+        </div>
+        <div ng-show="authCtrl.showSignupForm">
+            <form class="form-signin" ng-submit="authCtrl.signup()">
+                <h2 class="form-signin-heading">Sign up</h2>
+                <label for="signupEmail" class="sr-only">Email address</label>
+                <input type="email" id="signupEmail" class="form-control" placeholder="Email address" required ng-model="authCtrl.newUser.email">
+                <label for="signupPassword" class="sr-only">Password</label>
+                <input type="password" id="signupPassword" class="form-control" placeholder="Password" required ng-model="authCtrl.newUser.password">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script>
+        var app = angular.module('authApp', []);
+
+        app.controller('AuthController', function () {
+            this.user = {
+                email: '',
+                password: ''
+            };
+
+            this.newUser = {
+                email: '',
+                password: ''
+            };
+
+            this.showSignupForm = false;
+
+            this.isAuthenticated = function () {
+                return this.user.email !== '';
+            };
+
+            this.login = function () {
+                // Implement your login logic here
+                console.log('Logging in', this.user.email, this.user.password);
+            };
+
+            this.logout = function () {
+                // Implement your logout logic here
+                this.user.email = '';
+                this.user.password = '';
+                console.log('Logged out');
+            };
+
+            this.showSignup = function () {
+                this.showSignupForm = true;
+            };
+
+            this.signup = function () {
+                // Implement your signup logic here
+                console.log('Signing up', this.newUser.email, this.newUser.password);
+                this.showSignupForm = false;
+            };
+        });
+    </script>
+</body>
+
+</html>
