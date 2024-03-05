@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .task-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .task-list li {
+            border: 1px solid #ddd;
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .edit-task {
+            margin-bottom: 12px;
+        }
+
+        button {
+            background-color: #4CAF50; /* green */
+            color: white;
+            padding: 10px 24px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body ng-app="taskManagerApp" ng-controller="TaskManagerController as ctrl">
+
+    <h2>Task Manager</h2>
+    <input type="text" ng-model="ctrl.newTask" placeholder="Add new task" ng-keypress="$event.which === 13 && ctrl.addTask()">
+    <button ng-click="ctrl.addTask()">Add Task</button>
+
+    <ul class="task-list">
+        <li ng-repeat="task in ctrl.tasks">
+            <input type="text" ng-model="task.title" ng-show="task.editing" class="edit-task">
+            <span ng-hide="task.editing">{{ task.title }}</span>
+            <button ng-click="task.editing = true" ng-hide="task.editing">Edit</button>
+            <button ng-click="ctrl.updateTask(task)" ng-show="task.editing">Update</button>
+            <button ng-click="ctrl.deleteTask($index)">Delete</button>
+        </li>
+    </ul>
+
+    <script>
+        angular.module('taskManagerApp', [])
+            .controller('TaskManagerController', function() {
+                var vm = this;
+                vm.tasks = [];
+
+                vm.addTask = function() {
+                    if (!vm.newTask) return;
+                    vm.tasks.push({title: vm.newTask, editing: false});
+                    vm.newTask = ''; // clear the input after adding
+                };
+
+                vm.updateTask = function(task) {
+                    task.editing = false;
+                };
+
+                vm.deleteTask = function(index) {
+                    vm.tasks.splice(index, 1);
+                };
+            });
+    </script>
+</body>
+</html>
