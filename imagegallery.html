@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Image Gallery</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+        }
+        .gallery-item {
+            border: 5px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            width: calc(100% / 3 - 10px);
+            box-shadow: 5 5 5px rgba(5,5,5,5.2);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .gallery-item:hover {
+            transform: scale(2.05);
+        }
+        .image-details {
+            text-align: center;
+            padding: 10px;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body ng-app="imageGalleryApp" ng-controller="GalleryController as galleryCtrl">
+
+<div class="gallery-container">
+    <div class="gallery-item" ng-repeat="image in galleryCtrl.images" ng-click="galleryCtrl.selectImage(image)">
+        <img ng-src="{{image.src}}" alt="{{image.alt}}">
+    </div>
+</div>
+
+<div class="image-details" ng-if="galleryCtrl.selectedImage">
+    <h2>{{galleryCtrl.selectedImage.title}}</h2>
+    <img ng-src="{{galleryCtrl.selectedImage.src}}" alt="{{galleryCtrl.selectedImage.alt}}">
+    <p>{{galleryCtrl.selectedImage.description}}</p>
+</div>
+
+<script>
+    angular.module('imageGalleryApp', [])
+    .controller('GalleryController', function() {
+        this.images = [
+            { src: 'https://i0.wp.com/picjumbo.com/wp-content/uploads/beautiful-nature-mountain-scenery-with-flowers-free-photo.jpg?w=600&quality=80', alt: 'Image 1', title: 'Image One', description: 'Description of image one.' },
+            { src: 'https://images.pexels.com/photos/36478/amazing-beautiful-beauty-blue.jpg?cs=srgb&dl=pexels-pixabay-36478.jpg&fm=jpg', alt: 'Image 2', title: 'Image Two', description: 'Description of image two.' },
+            { src: 'https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=1024x1024&w=0&k=20&c=z8_rWaI8x4zApNEEG9DnWlGXyDIXe-OmsAyQ5fGPVV8=', alt: 'Image 3', title: 'Image Three' },
+            // Add more images as needed
+        ];
+
+        this.selectedImage = null;
+
+        this.selectImage = function(image) {
+            this.selectedImage = image;
+        };
+    });
+</script>
+
+</body>
+</html>
