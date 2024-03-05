@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="productCatalogApp">
+<head>
+    <title>Product Catalog</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        /* CSS styling for the product catalog */
+        /* Add your styles here */
+    </style>
+</head>
+<body>
+    <div ng-controller="ProductCatalogController as catalog">
+        <h1>Product Catalog</h1>
+        
+        <!-- Filter options -->
+        <div>
+            <label>Category:</label>
+            <select ng-model="catalog.selectedCategory">
+                <option value="">All</option>
+                <option ng-repeat="category in catalog.categories">{{category}}</option>
+            </select>
+        </div>
+        
+        <!-- Product display area -->
+        <div>
+            <div ng-repeat="product in catalog.products | filter: { category: catalog.selectedCategory }">
+                <h3>{{product.name}}</h3>
+                <p>{{product.description}}</p>
+                <p>Price: {{product.price}}</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('productCatalogApp', [])
+        .controller('ProductCatalogController', function() {
+            this.selectedCategory = '';
+            this.categories = ['Category1', 'Category2', 'Category3']; // Example categories
+            this.products = [
+                { name: 'Product1', description: 'Description1', category: 'Category1', price: 10.99 },
+                { name: 'Product2', description: 'Description2', category: 'Category2', price: 20.99 },
+                { name: 'Product3', description: 'Description3', category: 'Category1', price: 15.99 },
+                // Add more products
+            ];
+        });
+    </script>
+</body>
+</html>
