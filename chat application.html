@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="chatApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-time Chat App</title>
+    <style>
+        /* CSS for Chat Interface */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-container {
+            width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .chat-messages {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message.sender {
+            text-align: right;
+        }
+        .message.receiver {
+            text-align: left;
+        }
+        .message p {
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            padding: 5px 10px;
+            display: inline-block;
+            max-width: 70%;
+        }
+        .chat-input {
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body ng-controller="ChatController">
+    <div class="chat-container">
+        <div class="chat-messages">
+            <div class="message" ng-class="message.sender ? 'sender' : 'receiver'" ng-repeat="message in messages">
+                <p>{{ message.text }}</p>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" ng-model="newMessage" placeholder="Type your message..." ng-keypress="sendMessage($event)">
+        </div>
+    </div>
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        angular.module('chatApp', [])
+            .controller('ChatController', function($scope) {
+                $scope.messages = [];
+                
+                // Simulated received messages
+                var receivedMessages = [
+                    { text: "Hello there!", sender: false },
+                    { text: "Hi! How can I help you?", sender: true },
+                    { text: "I have a question about your product.", sender: false },
+                    { text: "Sure, feel free to ask!", sender: true }
+                ];
+                
+                // Simulated receiving messages over time
+                var index = 0;
+                setInterval(function() {
+                    $scope.$apply(function() {
+                        if (index < receivedMessages.length) {
+                            $scope.messages.push(receivedMessages[index]);
+                            index++;
+                        }
+                    });
+                }, 2000);
+                
+                $scope.sendMessage = function(event) {
+                    if (event.keyCode === 13 && $scope.newMessage.trim() !== '') {
+                        $scope.messages.push({ text: $scope.newMessage, sender: true });
+                        $scope.newMessage = '';
+                    }
+                };
+            });
+    </script>
+</body>
+</html>
