@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="todoApp">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List with AngularJS</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+  }
+
+  .todo {
+    max-width: 400px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+  }
+
+  .todo-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .todo-item-remove {
+    cursor: pointer;
+    color: #e74c3c;
+    transition: transform 0.3s;
+  }
+
+  .todo-item-remove:hover {
+    transform: scale(1.2);
+  }
+</style>
+</head>
+<body>
+<div ng-controller="TodoCtrl" class="todo">
+  <h1>To-Do List</h1>
+  <input type="text" ng-model="newTodo" placeholder="Add a new task">
+  <button ng-click="addTodo()">Add</button>
+  <ul>
+    <li ng-repeat="todo in todos" class="todo-item" ng-animate="'todo'">
+      {{todo}}
+      <span class="todo-item-remove" ng-click="removeTodo($index)">X</span>
+    </li>
+  </ul>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script>
+  angular.module('todoApp', [])
+    .controller('TodoCtrl', function ($scope) {
+      $scope.todos = [];
+      $scope.addTodo = function () {
+        if ($scope.newTodo) {
+          $scope.todos.push($scope.newTodo);
+          $scope.newTodo = '';
+        }
+      };
+      $scope.removeTodo = function (index) {
+        $scope.todos.splice(index, 1);
+      };
+    });
+</script>
+</body>
+</html>
